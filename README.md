@@ -1,4 +1,4 @@
-# 4-BIT-RIPPLE-COUNTER
+![image](https://github.com/user-attachments/assets/146fbdc3-058f-4198-ad9b-51af95ec8dc2)# 4-BIT-RIPPLE-COUNTER
 
 **AIM:**
 
@@ -21,20 +21,56 @@ In timing diagram Q0 is changing as soon as the negative edge of clock pulse is 
 ![image](https://github.com/naavaneetha/4-BIT-RIPPLE-COUNTER/assets/154305477/a573a7d6-014e-4e54-93e6-e2ac9530960b)
 
 ![image](https://github.com/naavaneetha/4-BIT-RIPPLE-COUNTER/assets/154305477/85e1958a-2fc1-49bb-9a9f-d58ccbf3663c)
-
+~~~
 **Procedure**
 
 /* write all the steps invloved */
 
 **PROGRAM**
 
-/* Program for 4 Bit Ripple Counter and verify its truth table in quartus using Verilog programming.
+/* Program for 44 Bit Ripple Counter and verify its truth table in quartus using Verilog programming.
 
- Developed by: RegisterNumber:
+ Developed by:Jayasree T S
+ RegisterNumber:24900147
+module exp12 (
+    input clk,     // Clock input
+    input reset,   // Reset input (active high)
+    output [3:0] q // 4-bit output
+);
+    // Internal signals for flip-flops
+    reg [3:0] q_int;
+
+    // Assign internal register to output
+    assign q = q_int;
+
+    always @(posedge clk or posedge reset) begin
+        if (reset) 
+            q_int[0] <= 1'b0; // Reset the first bit to 0
+        else 
+            q_int[0] <= ~q_int[0]; // Toggle the first bit on clock edge
+    end
+
+    // Generate the other flip-flops based on the output of the previous one
+    genvar i;
+    generate
+        for (i = 1; i < 4; i = i + 1) begin : ripple
+            always @(posedge q_int[i-1] or posedge reset) begin
+                if (reset) 
+                    q_int[i] <= 1'b0; // Reset the bit to 0
+                else 
+                    q_int[i] <= ~q_int[i]; // Toggle the bit on clock edge of previous stage
+            end
+        end
+    endgenerate
+endmodule
+
 */
+~~~
 
-**RTL LOGIC FOR 4 Bit Ripple Counter**
+**RTL LOGIC FOR 4 Bit Ripple Counter**![exp12 rtl](https://github.com/user-attachments/assets/ee92b20d-747d-4675-931f-d296aff6bc20)
 
-**TIMING DIGRAMS FOR 4 Bit Ripple Counter**
 
-**RESULTS**
+**TIMING DIGRAMS FOR 4 Bit Ripple Counter**![exp12 waveform](https://github.com/user-attachments/assets/7525172a-0a47-4e79-a921-2299a9cf19a7)
+
+
+**RESULTS** 4 Bit ripple counter is verified.
